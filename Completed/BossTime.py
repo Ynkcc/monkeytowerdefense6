@@ -5,19 +5,19 @@ jsCode = """
 Java.perform(function(){
     
     var str_name_so = 'libil2cpp.so';    //需要hook的so名
-    var n_addr_func_offset =0xF05624;         //需要hook的函数的偏移
+    var n_addr_func_offset =0xF68A6C;         //需要hook的函数的偏移
     /*
-    RVA: 0xF05624 Offset: 0xF05624 VA: 0xF05624
-	public int get_KnowledgePoints() { }
+    RVA: 0xF68A6C Offset: 0xF68A6C VA: 0xF68A6C
+	public TimeSpan GetPenaltyTime() { }
     */
     var struct_addr;
-    var trophies=0x140;   //字段偏移 public KonFuze trophies; // 0x140
-    var trophiesWalletId=0xF8; //public string trophiesWalletId; // 0xF8
+    var bossTimes=0x38;   //private KonFuze[] bossTimes; // 0x38
+    var penaltyTime=0x40; //private KonFuze penaltyTime; // 0x40
     var n_addr_so = Module.findBaseAddress(str_name_so); //加载到内存后 函数地址 = so地址 + 函数偏移
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
-    var trophies_addr;
-    var trophiesWalletId_addr;
+    var bossTimes_addr;
+    var penaltyTime_addr;
     send("so基址："+n_addr_so);
     send("native: " + nativePointer);
     
@@ -33,18 +33,20 @@ Java.perform(function(){
 
     Interceptor.attach(nativePointer, {
         onEnter: function(args){
-            if(arg0==null){
             send("start....");
             send("struct_addr "+args[0]);
-            trophies_addr = args[0].add(trophies);
-            trophiesWalletId_addr=args[0].add(trophiesWalletId);
-            var i=trophies_addr.readPointer();
-            send("trophies: "+get_val(i))
-            set_val(arg0,40000)
-            send("trophies: "+get_val(i))
-            send("trophiesWalletId_addr reset")
-            trophiesWalletId_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00])
-            send("over.....")
+            penaltyTime_addr = args[0].add(penaltyTime);
+            var ptFuze=penaltyTime_addr.readPointer();
+            send("penaltyTime: "+get_val(ptFuze))
+            //set_val(ptFuze,5000)
+            bossTimes_addr=args[0].add(bossTimes);
+            var btFuzeArray=bossTimes_addr.readPointer();
+            btFuzeArray=btFuzeArray.add(0x20);
+            for(var j=0;j<5;j++){
+                var btFuze=btFuzeArray.readPointer();
+                send("bossTime: "+get_val(btFuze))
+                //set_val(btFuze,5000)
+                btFuzeArray=btFuzeArray.add(0x8);
             }
         }
     });
