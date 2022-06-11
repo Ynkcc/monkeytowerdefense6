@@ -5,7 +5,7 @@ jsCode = """
 Java.perform(function(){
     //var nativePointer = Module.findExportByName("libhello.so", "Java_com_xiaojianbang_app_NativeHelper_add");
     var str_name_so = 'libil2cpp.so';    //需要hook的so名
-    var n_addr_func_offset = 0xE544D8;         //需要hook的函数的偏移
+    var n_addr_func_offset = 0xE99FD4;         //需要hook的函数的偏移
     var n_addr_so = Module.findBaseAddress(str_name_so); //加载到内存后 函数地址 = so地址 + 函数偏移
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
