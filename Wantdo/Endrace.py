@@ -5,7 +5,7 @@ jsCode = """
 Java.perform(function(){
     //var nativePointer = Module.findExportByName("libhello.so", "Java_com_xiaojianbang_app_NativeHelper_add");
     var str_name_so = 'libil2cpp.so';    //需要hook的so名
-    var n_addr_func_offset = 0xE1802C;         //需要hook的函数的偏移
+    var n_addr_func_offset = 0x1587B54;         //需要hook的函数的偏移
     var n_addr_so = Module.findBaseAddress(str_name_so); //加载到内存后 函数地址 = so地址 + 函数偏移
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
@@ -15,14 +15,27 @@ Java.perform(function(){
             send("start....");
             send(args[0]);
             send(args[1]);
-            //send(args[1].readFloat());
-            send("args1:"+hexdump(args[1], { offset: 0, length: 1000, header: true, ansi: false }));
             send(args[2]);
             send(args[3]);
-            
-            send('RegisterNatives called from:' );
-            send(Thread.backtrace(this.context, Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('______HHHHHHH-----'))
-            send('----------------------------------------------------------------------------------------------')     
+            send(args[4]);
+            send(args[5]);
+            send(args[6]);
+            send(args[7]);
+            send(args[8]);
+            send(args[9]);
+            send(args[10]);
+            send(args[11]);
+            send(args[12]);
+            send(args[13]);
+            send(args[14]);
+            send(args[15]);
+            send(args[16]);
+            send(args[17]);
+            send(args[18]);
+            send("尝试read float");
+            send(args[13].readS32());
+            send(args[14].readS32());
+            send(args[15].readS32());
             //send('arg1: '+args[2].readCString());
             //send('arg2: '+args[3]);
 
@@ -30,15 +43,8 @@ Java.perform(function(){
         },
         onLeave: function(retval){
             send("retval:"+retval);
-
-            send(retval.toInt32())
-
-            //send("retval:"+hexdump(retval))
             //retval.replace(1);
-            
-
-            //send("retval:"+retval.readByteArray(16));
-            
+            //send("retval:"+ptr(Java.vm.tryGetEnv().getStringUtfChars(retval)).readCString());
             send("over.....")
         }
     });
@@ -51,10 +57,7 @@ def message(message, data):
     else:
         print(message)
  
-str_host="192.168.104.205:1234"
-manager=frida.get_device_manager()
-remote_device=manager.add_remote_device(str_host)
-process= remote_device.attach("Bloons TD 6")
+process = frida.get_remote_device().attach("Bloons TD 6")
 script= process.create_script(jsCode)
 script.on("message", message)
 script.load()

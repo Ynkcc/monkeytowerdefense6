@@ -47,7 +47,7 @@ Java.perform(function(){
             send("trophies: "+get_val(i))
             send("trophiesWalletId_addr reset")
             trophiesWalletId_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
-            ownerID_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
+            //ownerID_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
             send("over.....")
             }
         }

@@ -6,9 +6,9 @@ Java.perform(function(){
     
     //var nativePointer = Module.findExportByName("libhello.so", "Java_com_xiaojianbang_app_NativeHelper_add");
     var str_name_so = 'libil2cpp.so';    //需要hook的so名
-    var n_addr_func_offset =0x11DF554;         //需要hook的函数的偏移
+    var n_addr_func_offset =0xF05624;         //需要hook的函数的偏移
     var struct_addr=0x0;  //0xF01580.0x78163d9540.0x6dbd0b9540
-    var needpart=0x20; //字段偏移
+    var needpart=0x168; //字段偏移
     var n_addr_so = Module.findBaseAddress(str_name_so); //加载到内存后 函数地址 = so地址 + 函数偏移
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
@@ -47,9 +47,10 @@ Java.perform(function(){
             };
             send("hexdump:")
             console.log(hexdump(field_addr, { offset: 0, length: 400, header: true, ansi: false }));
-            arg0=field_addr.readInt();
-            send("arg0: " + arg0);
-            field_addr.writeByteArray([0x00])
+            arg0=field_addr.readPointer();
+            console.log(hexdump(arg0, { offset: 0, length: 400, header: true, ansi: false }));
+            //send("arg0: " + arg0);
+            //field_addr.writeByteArray([0x00])
 
             send("over.....")
             

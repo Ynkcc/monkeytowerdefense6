@@ -45,8 +45,11 @@ def message(message, data):
         print(u"[*] {0}".format(message['payload']))
     else:
         print(message)
- 
-process = frida.get_remote_device().attach("Bloons TD 6")
+
+str_host="192.168.204.205:1234"
+manager=frida.get_device_manager()
+remote_device=manager.add_remote_device(str_host)
+process= remote_device.attach("Bloons TD 6")
 script= process.create_script(jsCode)
 script.on("message", message)
 script.load()

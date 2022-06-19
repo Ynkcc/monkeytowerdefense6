@@ -63,7 +63,7 @@ def message(message, data):
     else:
         print(message)
  
-
+#adb shell setenforce 0
 process = frida.get_remote_device().attach("Bloons TD 6")
 script= process.create_script(jsCode)
 script.on("message", message)

@@ -38,14 +38,14 @@ Java.perform(function(){
             penaltyTime_addr = args[0].add(penaltyTime);
             var ptFuze=penaltyTime_addr.readPointer();
             send("penaltyTime: "+get_val(ptFuze))
-            //set_val(ptFuze,5000)
+            set_val(ptFuze,204)
             bossTimes_addr=args[0].add(bossTimes);
             var btFuzeArray=bossTimes_addr.readPointer();
             btFuzeArray=btFuzeArray.add(0x20);
             for(var j=0;j<5;j++){
                 var btFuze=btFuzeArray.readPointer();
                 send("bossTime: "+get_val(btFuze))
-                //set_val(btFuze,5000)
+                set_val(btFuze,2200)
                 btFuzeArray=btFuzeArray.add(0x8);
             }
         }

@@ -5,7 +5,7 @@ jsCode = """
 Java.perform(function(){
     //var nativePointer = Module.findExportByName("libhello.so", "Java_com_xiaojianbang_app_NativeHelper_add");
     var str_name_so = 'libil2cpp.so';    //需要hook的so名
-    var n_addr_func_offset =0xE82358;         //需要hook的函数的偏移
+    var n_addr_func_offset =0x0197436C;         //需要hook的函数的偏移
     var n_addr_so = Module.findBaseAddress(str_name_so); //加载到内存后 函数地址 = so地址 + 函数偏移
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
@@ -18,6 +18,7 @@ Java.perform(function(){
             send("start....");
             send(args[0]);
             send(args[1]);
+            
             //send("args1:"+hexdump(args[1]));
             if(0){
             send('RegisterNatives called from:' );
@@ -26,7 +27,7 @@ Java.perform(function(){
             };
              
             send(args[2]);
-            args[2]=ptr(5)
+            //args[2]=ptr(5)
             send(args[3]);
             send(args[4]);
             //send(args[2]=ptr(1000))
@@ -34,6 +35,7 @@ Java.perform(function(){
         },
         onLeave: function(retval){
             send("retval:"+retval);
+            retval.replace(1);
             if(retval.toInt32()==25536){
             send('RegisterNatives called from:' );
             send(Thread.backtrace(this.context, Backtracer.ACCURATE).map(DebugSymbol.fromAddress).join('______HHHHHHH-----'))
@@ -44,7 +46,7 @@ Java.perform(function(){
             
             //var myval=retval.add(0x1C);
             //send("retval:"+hexdump(retval))
-            //retval.replace(1);
+            retval.replace(1);
             //myval.writeByteArray([0x20,0x00,0x37]);
             
             //send("hexdump:"+hexdump(retval, { offset: 0, length: 400, header: true, ansi: false }));

@@ -10,19 +10,11 @@ Java.perform(function(){
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
     send("native: " + nativePointer);
-    var docp;
-    Interceptor.attach(nativePointer, {
-        onEnter: function(args){
-            send("start....");
-            send("args[0]:"+args[0]);
-            send("args[1]:"+args[1]);
-            send("args[2]:"+args[2]);
-            docp=args[0].add(0x28);
-        },
-        onLeave: function(retval){
-            send("read "+docp.readDouble())
-        }
-    });
+    var col=Memory.alloc(40);
+    col.writeByteArray([0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0xa1 ,0x40])
+    //send(hexdump(col))
+    send(col.readPointer())
+
 });
 """;
  
