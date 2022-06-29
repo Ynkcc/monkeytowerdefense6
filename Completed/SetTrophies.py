@@ -43,11 +43,11 @@ Java.perform(function(){
             ownerID_addr=args[0].add(ownerID);
             var i=trophies_addr.readPointer();
             send("trophies: "+get_val(i))
-            set_val(i,5000)
+            set_val(i,0)
             send("trophies: "+get_val(i))
             send("trophiesWalletId_addr reset")
             trophiesWalletId_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
-            //ownerID_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
+            ownerID_addr.writeByteArray([0x00,0x00,0x00,0x00,0x00]);
             send("over.....")
             }
         }
@@ -62,7 +62,10 @@ def message(message, data):
     else:
         print(message)
  
-process = frida.get_remote_device().attach("Bloons TD 6")
+str_host="192.168.14.134:1234"
+manager=frida.get_device_manager()
+remote_device=manager.add_remote_device(str_host)
+process= remote_device.attach("Bloons TD 6")
 script= process.create_script(jsCode)
 script.on("message", message)
 script.load()

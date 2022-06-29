@@ -10,10 +10,14 @@ Java.perform(function(){
     var n_addr_func = parseInt(n_addr_so, 16) + n_addr_func_offset;
     var nativePointer = new NativePointer(n_addr_func);
     send("native: " + nativePointer);
-    var col=Memory.alloc(40);
-    col.writeByteArray([0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0xa1 ,0x40])
-    //send(hexdump(col))
-    send(col.readPointer())
+    var col=Memory.alloc(8);
+    col.writeByteArray([0x00, 0x00, 0x00, 0x00, 0x00, 0x0d, 0xf9 ,0x12])
+
+
+    var pol=Memory.alloc(8);
+    pol.writeDouble(2000);
+    console.log(hexdump(pol));
+    send(col.readDouble())
 
 });
 """;

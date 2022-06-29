@@ -93,7 +93,7 @@ Java.perform(function(){
             send("arg0: " + arg0);
             send("over.....")
             send("get_val: "+get_val(arg0))
-            set_val(arg0,4000)
+            set_val(arg0,10000)
             send("get_val: "+get_val(arg0))
             }
             
@@ -114,7 +114,7 @@ def message(message, data):
     else:
         print(message)
  
-str_host="192.168.249.205:1234"
+str_host="192.168.14.134:1234"
 manager=frida.get_device_manager()
 remote_device=manager.add_remote_device(str_host)
 process= remote_device.attach("Bloons TD 6")

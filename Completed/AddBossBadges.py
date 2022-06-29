@@ -11,12 +11,14 @@ Java.perform(function(){
     send("函数地址: " + nativePointer);
 
     var Btd6Player_addr=null;
+    var bossType=2;//Bloonarius = 0;Lych = 1;Vortex = 2;
+    var isElite=1; //0 or 1
+    var amount=1;
 
-
-    var addval_offset = 0xE1802C; 
+    var addval_offset = 0xE1400C; 
     var addval_func = parseInt(n_addr_so, 16) + addval_offset;
     var addval_Pointer = new NativePointer(addval_func);
-    var set_val = new NativeFunction(addval_Pointer,'void',["pointer","pointer"]);
+    var set_val = new NativeFunction(addval_Pointer,'void',["pointer","uint","bool","uint"]);
 
     Interceptor.attach(nativePointer, {
         onEnter: function(args){
